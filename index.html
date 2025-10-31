@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Digital Marketing, SEO & Social Media Marketing Services" />
+  <title>Boost Lead - Digital Marketing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Open Sans", sans-serif;
+      background-color: #f4f4f4;
+      overflow-x: hidden;
+    }
+
+    /* ✅ Header with blur + scroll */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 20px 0;
+      text-align: center;
+      z-index: 1000;
+      transition: background 0.4s ease, box-shadow 0.4s ease;
+      background: rgba(51, 51, 51, 0.2);
+      backdrop-filter: blur(10px);
+      color: white;
+    }
+
+    header.scrolled {
+      background: rgba(51, 51, 51, 0.95);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    header h1 { font-size: 36px; margin-bottom: 10px; }
+
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav a:hover { color: #ffcc00; }
+
+    /* ✅ Hero Section */
+    #home {
+      margin-top: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-container {
+      position: relative;
+      width: 90%;
+      height: 65vh;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      background-color: #000;
+    }
+
+    /* ✅ Gradient Overlay (default dark) */
+    .hero-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 40%;
+      background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0));
+      z-index: 2;
+      transition: background 0.8s ease;
+    }
+
+    .hero-overlay.light {
+      background: linear-gradient(to top, rgba(255,255,255,0.6), rgba(255,255,255,0));
+    }
+
+    .slide {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .slide.active { opacity: 1; z-index: 1; }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 8s ease-in-out;
+    }
+
+    .slide:nth-child(odd) img { transform: scale(1.05); }
+    .slide.active:nth-child(odd) img { transform: scale(1.2); }
+    .slide:nth-child(even) img { transform: scale(1.15); }
+    .slide.active:nth-child(even) img { transform: scale(1.0); }
+
+    /* ✅ Hero text with auto color */
+    .hero-text {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.55);
+      color: white;
+      padding: 20px 40px;
+      border-radius: 10px;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1s ease-in-out, color 0.6s ease, background 0.6s ease;
+      max-width: 80%;
+      z-index: 3;
+    }
+
+    .hero-text.light {
+      background: rgba(255, 255, 255, 0.6);
+      color: #222;
+    }
+
+    .hero-text.show { opacity: 1; }
+    .hero-text h2 { font-size: 28px; margin-bottom: 8px; }
+    .hero-text p { font-size: 16px; }
+
+    .dots {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 10px;
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background-color: #bbb;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .dot.active {
+      background-color: #333;
+      transform: scale(1.3);
+    }
+
+    section { 
+      padding: 60px 20px; 
+      text-align: center;
+      scroll-margin-top: 100px; /* Offset for fixed header */
+    }
+    
+    section h2 { font-size: 32px; margin-bottom: 20px; }
+
+    .services {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .service {
+      background-color: #fff;
+      padding: 20px;
+      width: 250px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .service img { width: 100%; border-radius: 8px; margin-bottom: 15px; }
+
+    /* Testimonial specific styling */
+    .testimonial-box {
+      background-color: #fff;
+      padding: 30px;
+      width: 300px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .testimonial-box p {
+      font-style: italic;
+      margin-bottom: 15px;
+      color: #555;
+    }
+
+    .testimonial-box h4 {
+      color: #333;
+      font-weight: 600;
+    }
+
+    /* About Us section */
+    #about-us p {
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.8;
+      color: #555;
+      font-size: 16px;
+    }
+
+    /* Contact section */
+    #contact p {
+      font-size: 18px;
+      margin: 10px 0;
+      color: #333;
+    }
+
+    #contact a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    #contact a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    @media screen and (max-width: 768px) {
+      .hero-container {
+        width: 95%;
+        height: 45vh;
+      }
+
+      .hero-text {
+        width: 90%;
+        padding: 15px;
+        bottom: 20px;
+      }
+
+      .hero-text h2 { font-size: 20px; }
+      .hero-text p { font-size: 14px; }
+      
+      nav a {
+        margin: 0 8px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header id="mainHeader">
+    <h1>Boost Lead</h1>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#services">Services</a>
+      <a href="#testimonial">Testimonial</a>
+      <a href="#about-us">About Us</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section id="home">
+    <div class="hero-container">
+      <div class="slide active">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&h=900&fit=crop" alt="SEO strategy and analytics">
+      </div>
+      <div class="slide">
+        <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1600&h=900&fit=crop" alt="Digital marketing team collaboration">
+      </div>
+      <div class="slide">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&h=900&fit=crop" alt="SEO and analytics dashboard">
+      </div>
+      <div class="slide">
+        <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1600&h=900&fit=crop" alt="Social media marketing strategy">
+      </div>
+
+      <div class="hero-overlay" id="heroOverlay"></div>
+
+      <div class="hero-text show" id="heroText">
+        <h2>Welcome to Boost Lead</h2>
+        <p>We help businesses grow online through expert SEO, digital marketing, and social media strategies.</p>
+      </div>
+    </div>
+
+    <div class="dots">
+      <div class="dot active" data-index="0"></div>
+      <div class="dot" data-index="1"></div>
+      <div class="dot" data-index="2"></div>
+      <div class="dot" data-index="3"></div>
+    </div>
+  </section>
+
+  <section id="services">
+    <h2>Our Services</h2>
+    <div class="services">
+      <div class="service">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop" alt="SEO Service" />
+        <h3>SEO Optimization</h3>
+        <p>Boost your website's ranking with proven SEO strategies.</p>
+      </div>
+      <div class="service">
+        <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&h=250&fit=crop" alt="Digital Marketing" />
+        <h3>Digital Marketing</h3>
+        <p>Reach your audience and increase conversions effectively.</p>
+      </div>
+      <div class="service">
+        <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=400&h=250&fit=crop" alt="Social Media Marketing" />
+        <h3>Social Media Marketing</h3>
+        <p>Grow your brand presence online with creative campaigns.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonial">
+    <h2>What Our Clients Say</h2>
+    <div class="services">
+      <div class="testimonial-box">
+        <p>"Boost Lead transformed our online presence! Our website traffic increased by 300% in just 3 months. Highly professional team!"</p>
+        <h4>Rupesh Kolhe, CEO of Interior Solutions</h4>
+      </div>
+      <div class="testimonial-box">
+        <p>"Excellent SEO and social media strategies. We saw real results within weeks. I highly recommend Boost Lead for any business."</p>
+        <h4>Vinod Sonawane, Marketing Director</h4>
+      </div>
+      <div class="testimonial-box">
+        <p>"Professional, reliable, and results-driven. Boost Lead helped us generate quality leads and grow our customer base significantly."</p>
+        <h4>Rupesh Kolhe, Owner of BuildMart</h4>
+      </div>
+    </div>
+  </section>
+
+  <section id="about-us">
+    <h2>About Us</h2>
+    <p>
+      Welcome to <strong>Boost Lead</strong> – your trusted partner in digital growth. Based in Pune, we specialize in helping businesses increase their online visibility, attract high-quality leads, and achieve measurable results through expert <strong>Digital Marketing</strong>, <strong>SEO</strong>, and <strong>Social Media Marketing</strong> strategies.
+      <br><br>
+      With years of experience and a passion for driving real business outcomes, we work closely with clients across industries to deliver tailored campaigns that boost brand awareness, engagement, and conversions. Whether you're a startup or an established business, we're here to elevate your digital presence and help you succeed online.
+    </p>
+  </section>
+
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <p><strong>Email:</strong> <a href="mailto:contact@boostlead.com">contact@boostlead.com</a></p>
+    <p><strong>Phone:</strong> <a href="tel:+917709557777">+91 77095 57777</a></p>
+    <p><strong>WhatsApp:</strong> <a href="https://wa.me/917709557777" target="_blank">Chat with us on WhatsApp</a></p>
+    <p><strong>Location:</strong> Baner, Pune, Maharashtra, India</p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Boost Lead. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".dot");
+    const heroText = document.getElementById("heroText");
+    const heroOverlay = document.getElementById("heroOverlay");
+    const header = document.getElementById("mainHeader");
+
+    const slideTexts = [
+      { title: "Welcome to Boost Lead", desc: "We help businesses grow online through expert SEO, digital marketing, and social media strategies." },
+      { title: "Boost Your SEO Performance", desc: "Rank higher and attract the right customers with data-driven SEO solutions." },
+      { title: "Engage Your Audience", desc: "Transform your online presence with engaging campaigns that convert." },
+      { title: "Drive Real Business Growth", desc: "From strategy to execution, we help you achieve measurable results." }
+    ];
+
+    let current = 0;
+    let sliderInterval;
+
+    // ✅ Function to detect image brightness
+    function isImageBright(image, callback) {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = 50;
+      canvas.height = 50;
+      ctx.drawImage(image, 0, 0, 50, 50);
+      const data = ctx.getImageData(0, 0, 50, 50).data;
+      let colorSum = 0;
+      for (let i = 0; i < data.length; i += 4) {
+        colorSum += (data[i] + data[i + 1] + data[i + 2]) / 3;
+      }
+      const brightness = colorSum / (data.length / 4);
+      callback(brightness > 140); // threshold
+    }
+
+    function adjustOverlayAndText(imageElement) {
+      isImageBright(imageElement, isBright => {
+        if (isBright) {
+          heroText.classList.add("light");
+          heroOverlay.classList.add("light");
+        } else {
+          heroText.classList.remove("light");
+          heroOverlay.classList.remove("light");
+        }
+      });
+    }
+
+    function showSlide(index) {
+      slides.forEach((slide) => slide.classList.remove("active"));
+      dots.forEach(dot => dot.classList.remove("active"));
+      slides[index].classList.add("active");
+      dots[index].classList.add("active");
+
+      heroText.classList.remove("show");
+      const currentImage = slides[index].querySelector("img");
+
+      adjustOverlayAndText(currentImage);
+
+      setTimeout(() => {
+        heroText.querySelector("h2").textContent = slideTexts[index].title;
+        heroText.querySelector("p").textContent = slideTexts[index].desc;
+        heroText.classList.add("show");
+      }, 400);
+    }
+
+    function nextSlide() {
+      current = (current + 1) % slides.length;
+      showSlide(current);
+    }
+
+    function startSlider() { sliderInterval = setInterval(nextSlide, 5000); }
+    function pauseSlider() { clearInterval(sliderInterval); }
+
+    dots.forEach(dot => {
+      dot.addEventListener("click", () => {
+        current = parseInt(dot.getAttribute("data-index"));
+        showSlide(current);
+        pauseSlider();
+        startSlider();
+      });
+    });
+
+    document.querySelector(".hero-container").addEventListener("mouseenter", pauseSlider);
+    document.querySelector(".hero-container").addEventListener("mouseleave", startSlider);
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 50) header.classList.add("scrolled");
+      else header.classList.remove("scrolled");
+    });
+
+    startSlider();	
+  </script>
+</body>
+</html>
