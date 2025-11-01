@@ -1,1475 +1,1782 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Digital Marketing, SEO & Social Media Marketing Services in Pune" />
-  <title>Boost Lead - Digital Marketing Services in Pune</title>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  
-  <!-- EmailJS SDK -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script type="text/javascript">
-    (function(){
-      emailjs.init("d2R89pBwVrjeKf8jd");
-    })();
-  </script>
-
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: "Open Sans", sans-serif;
-      background-color: #f4f4f4;
-      overflow-x: hidden;
-    }
-
-    header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-      transition: background 0.4s ease, box-shadow 0.4s ease;
-      background: rgba(26, 26, 26, 0.85);
-      backdrop-filter: blur(10px);
-      color: white;
-    }
-
-    header.scrolled {
-      background: rgba(26, 26, 26, 0.98);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    }
-
-    header h1 { 
-      font-size: 36px; 
-      margin: 0;
-    }
-
-    nav {
-      display: flex;
-      gap: 30px;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      transition: color 0.3s;
-    }
-
-    nav a:hover { color: #ffcc00; }
-
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      gap: 5px;
-    }
-
-    .hamburger span {
-      width: 25px;
-      height: 3px;
-      background-color: white;
-      transition: all 0.3s ease;
-    }
-
-    .mobile-menu {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 70%;
-      height: 100vh;
-      background: rgba(51, 51, 51, 0.98);
-      backdrop-filter: blur(10px);
-      padding: 80px 30px;
-      transition: right 0.4s ease;
-      z-index: 999;
-    }
-
-    .mobile-menu.active {
-      right: 0;
-    }
-
-    .mobile-menu a {
-      display: block;
-      color: white;
-      text-decoration: none;
-      font-size: 20px;
-      font-weight: bold;
-      padding: 15px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      transition: color 0.3s;
-    }
-
-    .mobile-menu a:hover {
-      color: #ffcc00;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 30px;
-      color: white;
-      cursor: pointer;
-      background: none;
-      border: none;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.5);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-      z-index: 998;
-    }
-
-    .overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    #home {
-      margin-top: 100px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .hero-container {
-      position: relative;
-      width: 90%;
-      height: 65vh;
-      overflow: hidden;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      background-color: #000;
-    }
-
-    .hero-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 40%;
-      background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0));
-      z-index: 2;
-      transition: background 0.8s ease;
-    }
-
-    .hero-overlay.light {
-      background: linear-gradient(to top, rgba(255,255,255,0.6), rgba(255,255,255,0));
-    }
-
-    .slide {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-    }
-
-    .slide.active { opacity: 1; z-index: 1; }
-
-    .slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 8s ease-in-out;
-    }
-
-    .slide:nth-child(odd) img { transform: scale(1.05); }
-    .slide.active:nth-child(odd) img { transform: scale(1.2); }
-    .slide:nth-child(even) img { transform: scale(1.15); }
-    .slide.active:nth-child(even) img { transform: scale(1.0); }
-
-    .hero-text {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.55);
-      color: white;
-      padding: 20px 40px;
-      border-radius: 10px;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 1s ease-in-out, color 0.6s ease, background 0.6s ease;
-      max-width: 80%;
-      z-index: 3;
-    }
-
-    .hero-text.light {
-      background: rgba(255, 255, 255, 0.6);
-      color: #222;
-    }
-
-    .hero-text.show { opacity: 1; }
-    .hero-text h2 { font-size: 28px; margin-bottom: 8px; }
-    .hero-text p { font-size: 16px; }
-
-    .dots {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-      gap: 10px;
-    }
-
-    .dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background-color: #bbb;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
-    }
-
-    .dot.active {
-      background-color: #333;
-      transform: scale(1.3);
-    }
-
-    section { 
-      padding: 60px 20px; 
-      text-align: center;
-      scroll-margin-top: 100px;
-    }
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Digital Marketing, SEO & Social Media Marketing Services in Pune" />
+    <title>Boost Lead - Digital Marketing Services in Pune</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
-    section h2 { 
-      font-size: 32px; 
-      margin-bottom: 40px;
-      color: #333;
-    }
-
-    .services {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .service {
-      background-color: #fff;
-      padding: 30px 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border: 1px solid #e0e0e0;
-    }
-
-    .service:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-    }
-
-    .service img { 
-      width: 100%; 
-      height: 180px;
-      object-fit: cover;
-      border-radius: 8px; 
-      margin-bottom: 20px; 
-    }
-
-    .service h3 {
-      font-size: 20px;
-      margin-bottom: 12px;
-      color: #333;
-      font-weight: 600;
-    }
-
-    .service p {
-      font-size: 14px;
-      color: #666;
-      line-height: 1.6;
-    }
-
-    #testimonial {
-      padding: 60px 0;
-    }
-
-    .testimonial-slider-container {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-      padding: 40px 0;
-      background: linear-gradient(135deg, #fffbf0 0%, #fff4d9 100%);
-      margin-top: 30px;
-    }
-
-    .testimonial-track {
-      display: flex;
-      gap: 30px;
-      animation: scroll 30s linear infinite;
-      width: max-content;
-    }
-
-    @keyframes scroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    .testimonial-track:hover {
-      animation-play-state: paused;
-    }
-
-    .testimonial-box {
-      background-color: #fff;
-      padding: 30px;
-      width: 350px;
-      min-width: 350px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      flex-shrink: 0;
-    }
-
-    .testimonial-avatar {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      margin: 0 auto 12px;
-      object-fit: cover;
-      border: 3px solid #ffcc00;
-      background: #eee;
-      display: block;
-    }
-
-    .star-rating {
-      color: #ffd700;
-      font-size: 20px;
-      margin-bottom: 15px;
-      letter-spacing: 3px;
-    }
-
-    .testimonial-box p {
-      font-style: italic;
-      margin-bottom: 20px;
-      color: #555;
-      font-size: 15px;
-      line-height: 1.6;
-    }
-
-    .testimonial-box h4 {
-      color: #333;
-      font-weight: 600;
-      margin-bottom: 5px;
-      font-size: 16px;
-    }
-
-    .testimonial-position {
-      font-size: 13px;
-      color: #777;
-      font-style: normal;
-      margin: 0;
-    }
-
-    footer {
-      background-color: #1a1a1a;
-      color: #f5f5f5;
-      padding: 60px 20px 20px;
-      scroll-margin-top: 100px;
-    }
-
-    .footer-container {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1.5fr;
-      gap: 40px;
-      max-width: 1200px;
-      margin: 0 auto 40px;
-    }
-
-    .footer-column h2,
-    .footer-column h3 {
-      color: #ffffff;
-      margin-bottom: 20px;
-    }
-
-    .footer-logo {
-      font-size: 32px;
-      font-weight: bold;
-      margin-bottom: 15px;
-    }
-
-    .footer-tagline {
-      color: #b0b0b0;
-      line-height: 1.6;
-      margin-bottom: 25px;
-      font-size: 15px;
-    }
-
-    .footer-heading {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 20px;
-      position: relative;
-      padding-bottom: 10px;
-    }
-
-    .footer-heading::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 40px;
-      height: 3px;
-      background-color: #ffcc00;
-    }
-
-    .social-icons {
-      display: flex;
-      gap: 15px;
-    }
-
-    .social-icons a {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
-      font-size: 18px;
-      transition: all 0.3s ease;
-      text-decoration: none;
-    }
-
-    .social-icons a:nth-child(1) {
-      background-color: #1877F2;
-    }
-
-    .social-icons a:nth-child(2) {
-      background-color: #1DA1F2;
-    }
-
-    .social-icons a:nth-child(3) {
-      background-color: #0A66C2;
-    }
-
-    .social-icons a:nth-child(4) {
-      background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF, #515BD4);
-    }
-
-    .social-icons a:hover {
-      transform: translateY(-3px) scale(1.1);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    .footer-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .footer-list li {
-      margin-bottom: 12px;
-    }
-
-    .footer-list a {
-      color: #b0b0b0;
-      text-decoration: none;
-      font-size: 15px;
-      transition: color 0.3s ease, padding-left 0.3s ease;
-      display: block;
-    }
-
-    .footer-list a:hover {
-      color: #ffcc00;
-      padding-left: 5px;
-    }
-
-    .footer-contact {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .footer-contact li {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 18px;
-      color: #b0b0b0;
-      font-size: 15px;
-    }
-
-    .footer-contact i {
-      color: #ffcc00;
-      font-size: 16px;
-      margin-top: 2px;
-      min-width: 18px;
-    }
-
-    .footer-contact a {
-      color: #b0b0b0;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .footer-contact a:hover {
-      color: #ffcc00;
-    }
-
-    .footer-bottom {
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding-top: 25px;
-      text-align: center;
-    }
-
-    .footer-bottom p {
-      color: #808080;
-      font-size: 14px;
-      margin: 0;
-    }
-
-    .footer-bottom strong {
-      color: #ffcc00;
-    }
-
-    .whatsapp-float {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 60px;
-      height: 60px;
-      background-color: #25D366;
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      z-index: 1000;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      animation: pulse 2s infinite;
-    }
-
-    .whatsapp-float:hover {
-      background-color: #128C7E;
-      transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4); }
-      50% { box-shadow: 0 4px 20px rgba(37, 211, 102, 0.8); }
-      100% { box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4); }
-    }
-
-    .enquiry-float {
-      position: fixed;
-      bottom: 30px;
-      left: 30px;
-      padding: 12px 24px;
-      background-color: #ffcc00;
-      color: #1a1a1a;
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      z-index: 1000;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      animation: pulse-yellow 2s infinite;
-    }
-
-    .enquiry-float:hover {
-      background-color: #e6b800;
-      transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-    }
-
-    @keyframes pulse-yellow {
-      0% { box-shadow: 0 4px 12px rgba(255, 204, 0, 0.4); }
-      50% { box-shadow: 0 4px 20px rgba(255, 204, 0, 0.8); }
-      100% { box-shadow: 0 4px 12px rgba(255, 204, 0, 0.4); }
-    }
-
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .modal-overlay.active {
-      display: flex;
-    }
-
-    .success-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 3000;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .success-modal.active {
-      display: flex;
-    }
-
-    .success-content {
-      background: white;
-      border-radius: 16px;
-      padding: 40px;
-      text-align: center;
-      max-width: 400px;
-      width: 90%;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-      animation: slideUp 0.3s ease;
-    }
-
-    .success-icon {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, #10b981, #059669);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-      animation: scaleIn 0.5s ease;
-    }
-
-    @keyframes scaleIn {
-      0% { transform: scale(0); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-
-    .success-icon i {
-      color: white;
-      font-size: 40px;
-    }
-
-    .success-content h2 {
-      color: #10b981;
-      margin-bottom: 15px;
-      font-size: 26px;
-    }
-
-    .success-content p {
-      color: #666;
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .modal-content {
-      background: white;
-      border-radius: 12px;
-      padding: 40px;
-      max-width: 500px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-      position: relative;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-      animation: slideUp 0.3s ease;
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      font-size: 28px;
-      color: #666;
-      cursor: pointer;
-      background: none;
-      border: none;
-      line-height: 1;
-      transition: color 0.3s;
-    }
-
-    .modal-close:hover {
-      color: #ff0000;
-    }
-
-    .modal-content h2 {
-      margin-bottom: 10px;
-      color: #1a1a1a;
-      font-size: 28px;
-    }
-
-    .modal-content p {
-      margin-bottom: 25px;
-      color: #666;
-      font-size: 14px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #333;
-      font-size: 14px;
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 14px;
-      font-family: 'Open Sans', sans-serif;
-      transition: border-color 0.3s;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: #ffcc00;
-      box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.1);
-    }
-
-    .form-group textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
-
-    .submit-btn {
-      width: 100%;
-      padding: 14px;
-      background-color: #ffcc00;
-      color: #1a1a1a;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .submit-btn:hover {
-      background-color: #e6b800;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(255, 204, 0, 0.4);
-    }
-
-    @media screen and (max-width: 1024px) {
-      .services {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-      }
-    }
-
-    @media screen and (max-width: 768px) {
-      header { padding: 15px 20px; }
-      header h1 { font-size: 24px; }
-      nav { display: none; }
-      .hamburger { display: flex; }
-
-      .modal-content {
-        padding: 25px;
-        max-height: 80vh;
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+      (function(){
+        emailjs.init("d2R89pBwVrjeKf8jd");
+      })();
+    </script>
+
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      html {
+        scroll-behavior: smooth;
       }
 
-      .enquiry-float {
-        left: 15px;
-        bottom: 100px;
-        padding: 10px 18px;
-        font-size: 14px;
+      body {
+        font-family: "Open Sans", sans-serif;
+        background-color: #f4f4f4;
+        overflow-x: hidden;
       }
-      
+
+      header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+        transition: background 0.4s ease, box-shadow 0.4s ease;
+        background: rgba(26, 26, 26, 0.85);
+        backdrop-filter: blur(10px);
+        color: white;
+      }
+
+      header.scrolled {
+        background: rgba(26, 26, 26, 0.98);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      header h1 { 
+        font-size: 36px; 
+        margin: 0;
+      }
+
+      nav {
+        display: flex;
+        gap: 30px;
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s;
+      }
+
+      nav a:hover { color: #ffcc00; }
+
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+        gap: 5px;
+      }
+
+      .hamburger span {
+        width: 25px;
+        height: 3px;
+        background-color: white;
+        transition: all 0.3s ease;
+      }
+
+      .mobile-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: rgba(51, 51, 51, 0.98);
+        backdrop-filter: blur(10px);
+        padding: 80px 30px;
+        transition: right 0.4s ease;
+        z-index: 999;
+      }
+
+      .mobile-menu.active {
+        right: 0;
+      }
+
+      .mobile-menu a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: bold;
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        transition: color 0.3s;
+      }
+
+      .mobile-menu a:hover {
+        color: #ffcc00;
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 30px;
+        color: white;
+        cursor: pointer;
+        background: none;
+        border: none;
+      }
+
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.4s ease;
+        z-index: 998;
+      }
+
+      .overlay.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      #home {
+        margin-top: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
       .hero-container {
-        width: 95%;
-        height: 45vh;
+        position: relative;
+        width: 90%;
+        height: 65vh;
+        overflow: hidden;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        background-color: #000;
       }
+
+      .hero-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 40%;
+        background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0));
+        z-index: 2;
+        transition: background 0.8s ease;
+      }
+
+      .hero-overlay.light {
+        background: linear-gradient(to top, rgba(255,255,255,0.6), rgba(255,255,255,0));
+      }
+
+      .slide {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+      }
+
+      .slide.active { opacity: 1; z-index: 1; }
+
+      .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 8s ease-in-out;
+      }
+
+      .slide:nth-child(odd) img { transform: scale(1.05); }
+      .slide.active:nth-child(odd) img { transform: scale(1.2); }
+      .slide:nth-child(even) img { transform: scale(1.15); }
+      .slide.active:nth-child(even) img { transform: scale(1.0); }
 
       .hero-text {
-        width: 90%;
-        padding: 15px;
-        bottom: 20px;
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.55);
+        color: white;
+        padding: 20px 40px;
+        border-radius: 10px;
+        text-align: center;
+        opacity: 0;
+        transition: opacity 1s ease-in-out, color 0.6s ease, background 0.6s ease;
+        max-width: 80%;
+        z-index: 3;
       }
 
-      .hero-text h2 { font-size: 20px; }
-      .hero-text p { font-size: 14px; }
+      .hero-text.light {
+        background: rgba(255, 255, 255, 0.6);
+        color: #222;
+      }
+
+      .hero-text.show { opacity: 1; }
+      .hero-text h2 { font-size: 28px; margin-bottom: 8px; }
+      .hero-text p { font-size: 16px; }
+
+      .dots {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        gap: 10px;
+      }
+
+      .dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: #bbb;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s;
+      }
+
+      .dot.active {
+        background-color: #333;
+        transform: scale(1.3);
+      }
+
+      section { 
+        padding: 60px 20px; 
+        text-align: center;
+        scroll-margin-top: 100px;
+      }
+      
+      section h2 { 
+        font-size: 32px; 
+        margin-bottom: 40px;
+        color: #333;
+      }
 
       .services {
-        grid-template-columns: 1fr;
-        gap: 20px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
       }
 
-      .service img { height: 200px; }
+      .service {
+        background-color: #fff;
+        padding: 30px 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid #e0e0e0;
+      }
 
-      .testimonial-box {
-        width: 280px;
-        min-width: 280px;
-        padding: 20px;
+      .service:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+      }
+
+      .service img { 
+        width: 100%; 
+        height: 180px;
+        object-fit: cover;
+        border-radius: 8px; 
+        margin-bottom: 20px; 
+      }
+
+      .service h3 {
+        font-size: 20px;
+        margin-bottom: 12px;
+        color: #333;
+        font-weight: 600;
+      }
+
+      .service p {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.6;
+      }
+
+      #testimonial {
+      padding: 50px 20px;
+      background-color: #f4f4f4;
+      text-align: center;
+      scroll-margin-top: 100px;
+      }
+
+      .testimonial-slider-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        padding: 40px 0;
+        background: linear-gradient(135deg, #fffbf0 0%, #fff4d9 100%);
+        margin-top: 30px;
       }
 
       .testimonial-track {
-        animation-duration: 20s;
+        display: flex;
+        gap: 30px;
+        animation: scroll 30s linear infinite;
+        width: max-content;
+      }
+
+      @keyframes scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+
+      .testimonial-track:hover {
+        animation-play-state: paused;
+      }
+
+      .testimonial-box {
+        background-color: #fff;
+        padding: 30px;
+        width: 350px;
+        min-width: 350px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        flex-shrink: 0;
+      }
+
+      .testimonial-avatar {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        margin: 0 auto 12px;
+        object-fit: cover;
+        border: 3px solid #ffcc00;
+        background: #eee;
+        display: block;
+      }
+
+      .star-rating {
+        color: #ffd700;
+        font-size: 20px;
+        margin-bottom: 15px;
+        letter-spacing: 3px;
+      }
+
+      .testimonial-box p {
+        font-style: italic;
+        margin-bottom: 20px;
+        color: #555;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      .testimonial-box h4 {
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 5px;
+        font-size: 16px;
+      }
+
+      .testimonial-position {
+        font-size: 13px;
+        color: #777;
+        font-style: normal;
+        margin: 0;
+      }
+
+      footer {
+        background-color: #1a1a1a;
+        color: #f5f5f5;
+        padding: 60px 20px 20px;
+        scroll-margin-top: 100px;
       }
 
       .footer-container {
-        grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: 2fr 1fr 1.5fr;
         gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto 40px;
+      }
+
+      .footer-column h2,
+      .footer-column h3 {
+        color: #ffffff;
+        margin-bottom: 20px;
+      }
+
+      .footer-logo {
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+
+      .footer-tagline {
+        color: #b0b0b0;
+        line-height: 1.6;
+        margin-bottom: 25px;
+        font-size: 15px;
+      }
+
+      .footer-heading {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+      }
+
+      .footer-heading::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 3px;
+        background-color: #ffcc00;
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 15px;
+      }
+
+      .social-icons a {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-size: 18px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+      }
+
+      .social-icons a:nth-child(1) {
+        background-color: #1877F2;
+      }
+
+      .social-icons a:nth-child(2) {
+        background-color: #1DA1F2;
+      }
+
+      .social-icons a:nth-child(3) {
+        background-color: #0A66C2;
+      }
+
+      .social-icons a:nth-child(4) {
+        background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF, #515BD4);
+      }
+
+      .social-icons a:hover {
+        transform: translateY(-3px) scale(1.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      .footer-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .footer-list li {
+        margin-bottom: 12px;
+      }
+
+      .footer-list a {
+        color: #b0b0b0;
+        text-decoration: none;
+        font-size: 15px;
+        transition: color 0.3s ease, padding-left 0.3s ease;
+        display: block;
+      }
+
+      .footer-list a:hover {
+        color: #ffcc00;
+        padding-left: 5px;
+      }
+
+      .footer-contact {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .footer-contact li {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 18px;
+        color: #b0b0b0;
+        font-size: 15px;
+      }
+
+      .footer-contact i {
+        color: #ffcc00;
+        font-size: 16px;
+        margin-top: 2px;
+        min-width: 18px;
+      }
+
+      .footer-contact a {
+        color: #b0b0b0;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer-contact a:hover {
+        color: #ffcc00;
+      }
+
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 25px;
+        text-align: center;
+      }
+
+      .footer-bottom p {
+        color: #808080;
+        font-size: 14px;
+        margin: 0;
+      }
+
+      .footer-bottom strong {
+        color: #ffcc00;
       }
 
       .whatsapp-float {
-        width: 55px;
-        height: 55px;
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        background-color: #25D366;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        animation: pulse 2s infinite;
+      }
+
+      .whatsapp-float:hover {
+        background-color: #128C7E;
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      @keyframes pulse {
+        0% { box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4); }
+        50% { box-shadow: 0 4px 20px rgba(37, 211, 102, 0.8); }
+        100% { box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4); }
+      }
+
+      .enquiry-float {
+        position: fixed;
+        bottom: 30px;
+        left: 30px;
+        padding: 12px 24px;
+        background-color: #ffcc00;
+        color: #1a1a1a;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        animation: pulse-yellow 2s infinite;
+      }
+
+      .enquiry-float:hover {
+        background-color: #e6b800;
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      @keyframes pulse-yellow {
+        0% { box-shadow: 0 4px 12px rgba(255, 204, 0, 0.4); }
+        50% { box-shadow: 0 4px 20px rgba(255, 204, 0, 0.8); }
+        100% { box-shadow: 0 4px 12px rgba(255, 204, 0, 0.4); }
+      }
+
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .modal-overlay.active {
+        display: flex;
+      }
+
+      .success-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 3000;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .success-modal.active {
+        display: flex;
+      }
+
+      .success-content {
+        background: white;
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+        max-width: 400px;
+        width: 90%;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        animation: slideUp 0.3s ease;
+      }
+
+      .success-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #10b981, #059669);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        animation: scaleIn 0.5s ease;
+      }
+
+      @keyframes scaleIn {
+        0% { transform: scale(0); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+      }
+
+      .success-icon i {
+        color: white;
+        font-size: 40px;
+      }
+
+      .success-content h2 {
+        color: #10b981;
+        margin-bottom: 15px;
+        font-size: 26px;
+      }
+
+      .success-content p {
+        color: #666;
+        font-size: 16px;
+        line-height: 1.6;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      .modal-content {
+        background: white;
+        border-radius: 12px;
+        padding: 40px;
+        max-width: 500px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        animation: slideUp 0.3s ease;
+      }
+
+      @keyframes slideUp {
+        from { transform: translateY(50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
         font-size: 28px;
-        bottom: 20px;
-        right: 20px;
+        color: #666;
+        cursor: pointer;
+        background: none;
+        border: none;
+        line-height: 1;
+        transition: color 0.3s;
+      }
+
+      .modal-close:hover {
+        color: #ff0000;
+      }
+
+      .modal-content h2 {
+        margin-bottom: 10px;
+        color: #1a1a1a;
+        font-size: 28px;
+      }
+
+      .modal-content p {
+        margin-bottom: 25px;
+        color: #666;
+        font-size: 14px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+        font-size: 14px;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: 'Open Sans', sans-serif;
+        transition: border-color 0.3s;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #ffcc00;
+        box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.1);
+      }
+
+      .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background-color: #ffcc00;
+        color: #1a1a1a;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        background-color: #e6b800;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 204, 0, 0.4);
+      }
+
+      @media screen and (max-width: 1024px) {
+        .services {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 20px;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        header { padding: 15px 20px; }
+        header h1 { font-size: 24px; }
+        nav { display: none; }
+        .hamburger { display: flex; }
+
+        .modal-content {
+          padding: 25px;
+          max-height: 80vh;
+        }
+
+        .enquiry-float {
+          left: 15px;
+          bottom: 100px;
+          padding: 10px 18px;
+          font-size: 14px;
+        }
+        
+        .hero-container {
+          width: 95%;
+          height: 45vh;
+        }
+
+        .hero-text {
+          width: 90%;
+          padding: 15px;
+          bottom: 20px;
+        }
+
+        .hero-text h2 { font-size: 20px; }
+        .hero-text p { font-size: 14px; }
+
+        .services {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .service img { height: 200px; }
+
+        .testimonial-box {
+          width: 280px;
+          min-width: 280px;
+          padding: 20px;
+        }
+
+        .testimonial-track {
+          animation-duration: 20s;
+        }
+
+        .footer-container {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+
+        .whatsapp-float {
+          width: 55px;
+          height: 55px;
+          font-size: 28px;
+          bottom: 20px;
+          right: 20px;
+        }
+      }
+    
+    /* Portfolio Section */
+    #portfolio {
+      padding: 80px 20px;
+      background-color: #fff;
+      text-align: center;
+    }
+
+    #portfolio h2 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    #portfolio p {
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 50px;
+    }
+
+    .portfolio-grid {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
+
+    .portfolio-card {
+      flex: 1;
+      min-width: 320px;
+      max-width: 380px;
+      background: #f9f9f9;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .portfolio-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .portfolio-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .portfolio-content {
+      padding: 20px;
+      text-align: left;
+    }
+
+    .portfolio-content h3 {
+      font-size: 22px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .portfolio-content p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .portfolio-stats {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #ddd;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 24px;
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #999;
+    }
+
+    /* Blog Section */
+    #blog {
+      padding: 80px 20px;
+      background-color: #f4f4f4;
+      text-align: center;
+    }
+
+    #blog h2 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    #blog p {
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 50px;
+    }
+
+    .blog-grid {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
+
+    .blog-card {
+      flex: 1;
+      min-width: 320px;
+      max-width: 380px;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      text-align: left;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .blog-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .blog-content {
+      padding: 20px;
+    }
+
+    .blog-date {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 10px;
+    }
+
+    .blog-content h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .blog-content p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .blog-link {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    .blog-link:hover {
+      color: #0056b3;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .portfolio-grid, .blog-grid {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .portfolio-card, .blog-card {
+        max-width: 100%;
       }
     }
-  </style>
-</head>
 
-<body>
-  <header id="mainHeader">
-    <h1>Boost Lead</h1>
-    
-    <nav>
+    </style>
+  </head>
+
+  <body>
+    <header id="mainHeader">
+      <h1>Boost Lead</h1>
+      
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#blog">Blog</a>
+        <a href="#testimonial">Testimonial</a>
+        <a href="#footer">Contact</a>
+      </nav>
+
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <button class="close-btn" id="closeBtn">&times;</button>
       <a href="#home">Home</a>
       <a href="#services">Services</a>
       <a href="#testimonial">Testimonial</a>
       <a href="#footer">About Us</a>
       <a href="#footer">Contact</a>
-    </nav>
-
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </header>
-
-  <div class="mobile-menu" id="mobileMenu">
-    <button class="close-btn" id="closeBtn">&times;</button>
-    <a href="#home">Home</a>
-    <a href="#services">Services</a>
-    <a href="#testimonial">Testimonial</a>
-    <a href="#footer">About Us</a>
-    <a href="#footer">Contact</a>
-  </div>
-
-  <div class="overlay" id="overlay"></div>
-
-  <section id="home">
-    <div class="hero-container">
-      <div class="slide active">
-        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&h=900&fit=crop" alt="SEO strategy">
-      </div>
-      <div class="slide">
-        <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1600&h=900&fit=crop" alt="Digital marketing">
-      </div>
-      <div class="slide">
-        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&h=900&fit=crop" alt="Analytics">
-      </div>
-      <div class="slide">
-        <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1600&h=900&fit=crop" alt="Social media">
-      </div>
-
-      <div class="hero-overlay" id="heroOverlay"></div>
-
-      <div class="hero-text show" id="heroText">
-        <h2>Welcome to Boost Lead</h2>
-        <p>We help businesses grow online through expert SEO, digital marketing, and social media strategies.</p>
-      </div>
     </div>
 
-    <div class="dots">
-      <div class="dot active" data-index="0"></div>
-      <div class="dot" data-index="1"></div>
-      <div class="dot" data-index="2"></div>
-      <div class="dot" data-index="3"></div>
-    </div>
-  </section>
+    <div class="overlay" id="overlay"></div>
 
-  <section id="services">
-    <h2>Our Services</h2>
-    <div class="services">
-      <div class="service">
-        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop" alt="SEO" />
-        <h3>SEO Optimization</h3>
-        <p>Boost your website's ranking with proven SEO strategies and dominate search results.</p>
-      </div>
-
-      <div class="service">
-        <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400&h=250&fit=crop" alt="Google Ads" />
-        <h3>Google Ads (PPC)</h3>
-        <p>Drive instant traffic and qualified leads with targeted pay-per-click advertising campaigns.</p>
-      </div>
-
-      <div class="service">
-        <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=400&h=250&fit=crop" alt="Social Media" />
-        <h3>Social Media Marketing</h3>
-        <p>Grow your brand presence online with creative campaigns that engage and convert.</p>
-      </div>
-
-      <div class="service">
-        <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&h=250&fit=crop" alt="Digital Marketing" />
-        <h3>Digital Marketing</h3>
-        <p>Reach your target audience and increase conversions with comprehensive marketing solutions.</p>
-      </div>
-
-      <div class="service">
-        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop" alt="Content" />
-        <h3>Content Marketing</h3>
-        <p>Engage your audience with high-quality blogs, videos, and compelling content that converts.</p>
-      </div>
-
-      <div class="service">
-        <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=400&h=250&fit=crop" alt="Web Dev" />
-        <h3>Website Development</h3>
-        <p>Build modern, responsive websites that convert visitors into loyal customers.</p>
-      </div>
-
-      <div class="service">
-        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=250&fit=crop" alt="Email" />
-        <h3>Email Marketing</h3>
-        <p>Nurture leads and boost sales with strategic email campaigns that deliver results.</p>
-      </div>
-
-      <div class="service">
-        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop" alt="Audit" />
-        <h3>Free Website Audit</h3>
-        <p>Get a comprehensive analysis of your website's performance and SEO health at no cost.</p>
-      </div>
-
-      <div class="service">
-        <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=400&h=250&fit=crop" alt="Local SEO" />
-        <h3>Local SEO</h3>
-        <p>Dominate local search results and attract nearby customers with Google Business Profile optimization.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="testimonial">
-    <h2>What Our Clients Say</h2>
-    
-    <div class="testimonial-slider-container">
-      <div class="testimonial-track">
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://logo.clearbit.com/apollohospitals.com" alt="Hair Clinic Logo" />
-          <div class="star-rating">★★★★★</div>
-          <p>Our hair transplant clinic saw 180% increase in enquiries within 2 months! Their Google Ads strategy brought us quality patients daily."</p>
-          <h4>Dr. Rajesh Sharma</h4>
-          <p class="testimonial-position">Director, SkyLine Hair Transplant Clinic</p>
+    <section id="home">
+      <div class="hero-container">
+        <div class="slide active">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&h=900&fit=crop" alt="SEO strategy">
+        </div>
+        <div class="slide">
+          <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1600&h=900&fit=crop" alt="Digital marketing">
+        </div>
+        <div class="slide">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&h=900&fit=crop" alt="Analytics">
+        </div>
+        <div class="slide">
+          <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1600&h=900&fit=crop" alt="Social media">
         </div>
 
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://logo.clearbit.com/fortishealthcare.com" alt="Eye Hospital Logo" />
-          <div class="star-rating">★★★★★</div>
-          <p>Boost Lead helped us dominate local SEO for eye care. We're now ranking #1 for 'best eye hospital in Pune' and getting 50+ calls daily!"</p>
-          <h4>Dr. Priya Kulkarni</h4>
-          <p class="testimonial-position">Founder, Vision Care Eye Hospital</p>
-        </div>
+        <div class="hero-overlay" id="heroOverlay"></div>
 
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://logo.clearbit.com/cipla.com" alt="Pharma Logo" />
-          <div class="star-rating">★★★★★</div>
-          <p>Their pharmaceutical digital marketing expertise helped us reach 500+ doctors. B2B lead generation campaigns exceeded all expectations!"</p>
-          <h4>Vikram Mehta</h4>
-          <p class="testimonial-position">Sales Head, MedCure Pharmaceuticals</p>
-        </div>
-
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://logo.clearbit.com/tajhotels.com" alt="Hotel Logo" />
-          <div class="star-rating">★★★★★</div>
-          <p>Hotel bookings went up 150% during off-season! Their content marketing and Google Ads brought international guests to our resort."</p>
-          <h4>Rohit Joshi</h4>
-          <p class="testimonial-position">Manager, Paradise Valley Resort</p>
-        </div>
-
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://logo.clearbit.com/kia.com" alt="Kia Logo" />
-          <div class="star-rating">★★★★★</div>
-          <p>Kia Sonet test drives increased by 300%! Local SEO and Google Ads brought serious buyers to our showroom daily. Outstanding work!"</p>
-          <h4>Sanjay Pawar</h4>
-          <p class="testimonial-position">Sales Manager, AutoMax Kia Showroom</p>
-        </div>
-
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://logo.clearbit.com/tatamotors.com" alt="Tata Motors Logo" />
-          <div class="star-rating">★★★★★</div>
-          <p>Tata Nexon enquiries doubled! Their automotive digital marketing strategy brought qualified buyers daily. Best agency for car dealerships!"</p>
-          <h4>Kiran Salvi</h4>
-          <p class="testimonial-position">Showroom Head, Tata Motors Pune</p>
-        </div>
-
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://logo.clearbit.com/manipal.edu" alt="College Logo" />
-          <div class="star-rating">★★★★★</div>
-          <p>Admissions increased by 250% this year! SEO and Google Ads campaigns brought quality student enquiries from across Maharashtra."</p>
-          <h4>Prof. Meera Deshpande</h4>
-          <p class="testimonial-position">Admissions Head, Zenith College</p>
-        </div>
-
-        <div class="testimonial-box">
-                    <img class="testimonial-avatar" src="https://ui-avatars.com/api/?name=Cinema&size=128&background=A855F7&color=fff&bold=true&font-size=0.4" alt="Cinema" />
-
-          <div class="star-rating">★★★★★</div>
-          <p>Movie promotion budget optimized by 40%! Their targeted Google Ads campaigns brought 2X footfalls on opening weekend. Brilliant strategy!"</p>
-          <h4>Rahul Kapoor</h4>
-          <p class="testimonial-position">Marketing Manager, CinePlex Distributors</p>
-        </div>
-
-        <!-- Duplicate for seamless loop -->
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://logo.clearbit.com/apollohospitals.com" alt="Hair Clinic Logo" />
-          <div class="star-rating">★★★★★</div>
-          <p>Our hair transplant clinic saw 180% increase in enquiries within 2 months! Their Google Ads strategy brought us quality patients daily."</p>
-          <h4>Dr. Rajesh Sharma</h4>
-          <p class="testimonial-position">Director, SkyLine Hair Transplant Clinic</p>
-        </div>
-
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://logo.clearbit.com/fortishealthcare.com" alt="Eye Hospital Logo" />
-          <div class="star-rating">★★★★★</div>
-          <p>Boost Lead helped us dominate local SEO for eye care. We're now ranking #1 for 'best eye hospital in Pune' and getting 50+ calls daily!"</p>
-          <h4>Dr. Priya Kulkarni</h4>
-          <p class="testimonial-position">Founder, Vision Care Eye Hospital</p>
-        </div>
-
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://img.icons8.com/ios-filled/100/059669/real-estate.png" alt="Real Estate Logo" />
-
-          <div class="star-rating">★★★★★</div>
-          <p>Property enquiries doubled in just 45 days! Their social media campaigns and SEO brought serious buyers. Highly recommend for real estate."</p>
-          <h4>Amit Patil</h4>
-          <p class="testimonial-position">MD, Sunrise Properties Pune</p>
-        </div>
-
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://logo.clearbit.com/tatacliq.com" alt="Spa Logo" />
-          <div class="star-rating">★★★★★</div>
-          <p>Our spa bookings increased by 220%! Instagram campaigns and Google Business optimization made us the go-to luxury spa in Baner."</p>
-          <h4>Sneha Deshmukh</h4>
-          <p class="testimonial-position">Owner, Aroma Bliss Spa & Salon</p>
-        </div>
-
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://logo.clearbit.com/cipla.com" alt="Pharma Logo" />
-          <div class="star-rating">★★★★★</div>
-          <p>Their pharmaceutical digital marketing expertise helped us reach 500+ doctors. B2B lead generation campaigns exceeded all expectations!"</p>
-          <h4>Vikram Mehta</h4>
-          <p class="testimonial-position">Sales Head, MedCure Pharmaceuticals</p>
-        </div>
-
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://logo.clearbit.com/tajhotels.com" alt="Hotel Logo" />
-          <div class="star-rating">★★★★★</div>
-          <p>Hotel bookings went up 150% during off-season! Their content marketing and Google Ads brought international guests to our resort."</p>
-          <h4>Rohit Joshi</h4>
-          <p class="testimonial-position">Manager, Paradise Valley Resort</p>
-        </div>
-
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://logo.clearbit.com/brigade.co.in" alt="Villa Logo" />
-          <div class="star-rating">★★★★★</div>
-          <p>Luxury villa enquiries tripled! SEO and Facebook campaigns targeted high-net-worth buyers perfectly. Best ROI we've seen in 5 years."</p>
-          <h4>Kavita Reddy</h4>
-          <p class="testimonial-position">Director, Elite Villas Pune</p>
-        </div>
-
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://logo.clearbit.com/kia.com" alt="Kia Logo" />
-          <div class="star-rating">★★★★★</div>
-          <p>Kia Sonet test drives increased by 300%! Local SEO and Google Ads brought serious buyers to our showroom daily. Outstanding work!"</p>
-          <h4>Sanjay Pawar</h4>
-          <p class="testimonial-position">Sales Manager, AutoMax Kia Showroom</p>
-        </div>
-
-<!-- Position 1: Gym (working logo, e.g. Cultfit) -->
-<div class="testimonial-box">
-            <img class="testimonial-avatar" src="https://img.icons8.com/ios-filled/100/F59E42/dumbbell.png" alt="Gym Logo" />
-
-  <div class="star-rating">★★★★★</div>
-  <p>"Gym memberships up 180% in 3 months! Instagram reels and Google Business posts made us the most popular gym in Koregaon Park."</p>
-  <h4>— Anjali Bhosale</h4>
-  <p class="testimonial-position">Owner, FitLife Gym & Fitness</p>
-</div>
-
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://logo.clearbit.com/tatamotors.com" alt="Tata Motors Logo" />
-          <div class="star-rating">★★★★★</div>
-          <p>Tata Nexon enquiries doubled! Their automotive digital marketing strategy brought qualified buyers daily. Best agency for car dealerships!"</p>
-          <h4>Kiran Salvi</h4>
-          <p class="testimonial-position">Showroom Head, Tata Motors Pune</p>
-        </div>
-
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://logo.clearbit.com/manipal.edu" alt="College Logo" />
-          <div class="star-rating">★★★★★</div>
-          <p>Admissions increased by 250% this year! SEO and Google Ads campaigns brought quality student enquiries from across Maharashtra."</p>
-          <h4>Prof. Meera Deshpande</h4>
-          <p class="testimonial-position">Admissions Head, Zenith College</p>
-        </div>
-
-        <div class="testimonial-box">
-          <img class="testimonial-avatar" src="https://logo.clearbit.com/pvr.co.in" alt="Cinema Logo" />
-          <div class="star-rating">★★★★★</div>
-          <p>Movie promotion budget optimized by 40%! Their targeted Google Ads campaigns brought 2X footfalls on opening weekend. Brilliant strategy!"</p>
-          <h4>Amor Kapoor</h4>
-          <p class="testimonial-position">Marketing Manager, CinePlex Distributors</p>
-        </div>
-
-
-      </div>
-    </div>
-
-      </div>
-    </div>
-  </section>
-
-  <footer id="footer">
-    <div class="footer-container">
-      <div class="footer-column">
-        <h3 class="footer-heading">About Us</h3>
-        <h2 class="footer-logo">Boost Lead</h2>
-        <p class="footer-tagline">Based in Pune, we are a results-driven digital marketing agency specializing in SEO, PPC, social media marketing, and web development. Our mission is to help businesses grow their online presence, generate quality leads, and achieve measurable ROI through data-driven strategies and creative campaigns.</p>
-        
-        <div class="social-icons">
-          <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-          <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <div class="hero-text show" id="heroText">
+          <h2>Welcome to Boost Lead</h2>
+          <p>We help businesses grow online through expert SEO, digital marketing, and social media strategies.</p>
         </div>
       </div>
 
-      <div class="footer-column">
-        <h3 class="footer-heading">Services</h3>
-        <ul class="footer-list">
-          <li><a href="#services">SEO Optimization</a></li>
-          <li><a href="#services">Google Ads (PPC)</a></li>
-          <li><a href="#services">Social Media Marketing</a></li>
-          <li><a href="#services">Digital Marketing</a></li>
-          <li><a href="#services">Content Marketing</a></li>
-          <li><a href="#services">Website Development</a></li>
-        </ul>
+      <div class="dots">
+        <div class="dot active" data-index="0"></div>
+        <div class="dot" data-index="1"></div>
+        <div class="dot" data-index="2"></div>
+        <div class="dot" data-index="3"></div>
       </div>
+    </section>
 
-      <div class="footer-column">
-        <h3 class="footer-heading">Contact Info</h3>
-        <ul class="footer-contact">
-          <li>
-            <i class="fas fa-phone"></i>
-            <a href="tel:+917709557777">+91 77095 57777</a>
-          </li>
-          <li>
-            <i class="fas fa-envelope"></i>
-            <a href="mailto:digitalseobooster@mail.com">digitalseobooster@mail.com</a>
-          </li>
-          <li>
-            <i class="fas fa-map-marker-alt"></i>
-            <span>Baner, Pune, Maharashtra, India</span>
-          </li>
-        </ul>
+    <section id="services">
+      <h2>Our Services</h2>
+      <div class="services">
+        <div class="service">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop" alt="SEO" />
+          <h3>SEO Optimization</h3>
+          <p>Boost your website's ranking with proven SEO strategies and dominate search results.</p>
+        </div>
+
+        <div class="service">
+          <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400&h=250&fit=crop" alt="Google Ads" />
+          <h3>Google Ads (PPC)</h3>
+          <p>Drive instant traffic and qualified leads with targeted pay-per-click advertising campaigns.</p>
+        </div>
+
+        <div class="service">
+          <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=400&h=250&fit=crop" alt="Social Media" />
+          <h3>Social Media Marketing</h3>
+          <p>Grow your brand presence online with creative campaigns that engage and convert.</p>
+        </div>
+
+        <div class="service">
+          <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&h=250&fit=crop" alt="Digital Marketing" />
+          <h3>Digital Marketing</h3>
+          <p>Reach your target audience and increase conversions with comprehensive marketing solutions.</p>
+        </div>
+
+        <div class="service">
+          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop" alt="Content" />
+          <h3>Content Marketing</h3>
+          <p>Engage your audience with high-quality blogs, videos, and compelling content that converts.</p>
+        </div>
+
+        <div class="service">
+          <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=400&h=250&fit=crop" alt="Web Dev" />
+          <h3>Website Development</h3>
+          <p>Build modern, responsive websites that convert visitors into loyal customers.</p>
+        </div>
+
+        <div class="service">
+          <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=250&fit=crop" alt="Email" />
+          <h3>Email Marketing</h3>
+          <p>Nurture leads and boost sales with strategic email campaigns that deliver results.</p>
+        </div>
+
+        <div class="service">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop" alt="Audit" />
+          <h3>Free Website Audit</h3>
+          <p>Get a comprehensive analysis of your website's performance and SEO health at no cost.</p>
+        </div>
+
+        <div class="service">
+          <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=400&h=250&fit=crop" alt="Local SEO" />
+          <h3>Local SEO</h3>
+          <p>Dominate local search results and attract nearby customers with Google Business Profile optimization.</p>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="footer-bottom">
-      <p>Copyright &copy; 2025 All Rights Reserved by <strong>Boost Lead</strong></p>
-    </div>
-  </footer>
-
-  <a href="https://wa.me/917709557777" class="whatsapp-float" target="_blank" aria-label="WhatsApp">
-    <i class="fab fa-whatsapp"></i>
-  </a>
-
-  <button class="enquiry-float" id="enquiryBtn" aria-label="Enquiry Now">
-    <i class="fas fa-envelope"></i> Enquiry Now
-  </button>
-
-  <div class="success-modal" id="successModal">
-    <div class="success-content">
-      <div class="success-icon">
-        <i class="fas fa-check"></i>
-      </div>
-      <h2>Thank You!</h2>
-      <p>Your enquiry has been submitted successfully.<br><br>We will reach out to you shortly!</p>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="enquiryModal">
-    <div class="modal-content">
-      <button class="modal-close" id="closeModal">&times;</button>
-      <h2>Get in Touch</h2>
-      <p>Fill out the form below and we'll get back to you shortly!</p>
+        <!-- Portfolio Section -->
+    <section id="portfolio">
+      <h2>Our Portfolio</h2>
+      <p>See how we've helped businesses grow their online presence</p>
       
-      <form id="enquiryForm">
-        <div class="form-group">
-          <label for="name">Full Name *</label>
-          <input type="text" id="name" name="name" required placeholder="Enter your name">
+      <div class="portfolio-grid">
+        <div class="portfolio-card">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop" alt="E-commerce SEO">
+          <div class="portfolio-content">
+            <h3>E-commerce SEO Success</h3>
+            <p>Increased organic traffic by 250% for a leading fashion retailer.</p>
+            <div class="portfolio-stats">
+              <div class="stat">
+                <div class="stat-number">250%</div>
+                <div class="stat-label">Traffic Growth</div>
+              </div>
+              <div class="stat">
+                <div class="stat-number">180%</div>
+                <div class="stat-label">Conversions</div>
+              </div>
+              <div class="stat">
+                <div class="stat-number">6 Mo</div>
+                <div class="stat-label">Timeline</div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="email">Email Address *</label>
-          <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+        <div class="portfolio-card">
+          <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&h=300&fit=crop" alt="Social Media">
+          <div class="portfolio-content">
+            <h3>Social Media Excellence</h3>
+            <p>Built strong social presence growing followers to 50K+.</p>
+            <div class="portfolio-stats">
+              <div class="stat">
+                <div class="stat-number">50K+</div>
+                <div class="stat-label">Followers</div>
+              </div>
+              <div class="stat">
+                <div class="stat-number">300%</div>
+                <div class="stat-label">Engagement</div>
+              </div>
+              <div class="stat">
+                <div class="stat-number">4 Mo</div>
+                <div class="stat-label">Timeline</div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="phone">Phone Number *</label>
-          <input type="tel" id="phone" name="phone" required placeholder="+91 XXXXX XXXXX">
+        <div class="portfolio-card">
+          <img src="https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=400&h=300&fit=crop" alt="Lead Generation">
+          <div class="portfolio-content">
+            <h3>Lead Generation Campaign</h3>
+            <p>Generated 500+ qualified leads monthly through targeted ads.</p>
+            <div class="portfolio-stats">
+              <div class="stat">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Leads/Month</div>
+              </div>
+              <div class="stat">
+                <div class="stat-number">45%</div>
+                <div class="stat-label">Conv. Rate</div>
+              </div>
+              <div class="stat">
+                <div class="stat-number">3 Mo</div>
+                <div class="stat-label">Timeline</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog">
+      <h2>Latest Insights</h2>
+      <p>Stay updated with the latest digital marketing trends and tips</p>
+      
+      <div class="blog-grid">
+        <div class="blog-card">
+          <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&h=300&fit=crop" alt="SEO Blog">
+          <div class="blog-content">
+            <div class="blog-date">October 28, 2025</div>
+            <h3>10 SEO Strategies That Actually Work in 2025</h3>
+            <p>Discover effective SEO techniques driving results for businesses in Pune and India.</p>
+            <a href="#" class="blog-link">Read More →</a>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="service">Service Interested In *</label>
-          <select id="service" name="service" required>
-            <option value="">Select a service</option>
-            <option value="SEO Optimization">SEO Optimization</option>
-            <option value="Google Ads (PPC)">Google Ads (PPC)</option>
-            <option value="Social Media Marketing">Social Media Marketing</option>
-            <option value="Digital Marketing">Digital Marketing</option>
-            <option value="Content Marketing">Content Marketing</option>
-            <option value="Website Development">Website Development</option>
-            <option value="Email Marketing">Email Marketing</option>
-            <option value="Free Website Audit">Free Website Audit</option>
-            <option value="Local SEO">Local SEO</option>
-          </select>
+        <div class="blog-card">
+          <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&h=300&fit=crop" alt="Social Media">
+          <div class="blog-content">
+            <div class="blog-date">October 25, 2025</div>
+            <h3>Social Media Marketing Guide for Indian Businesses</h3>
+            <p>Learn how to leverage Facebook, Instagram, and LinkedIn effectively.</p>
+            <a href="#" class="blog-link">Read More →</a>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" placeholder="Tell us about your project..."></textarea>
+        <div class="blog-card">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop" alt="Google Ads">
+          <div class="blog-content">
+            <div class="blog-date">October 22, 2025</div>
+            <h3>Google Ads vs Facebook Ads: Which is Better?</h3>
+            <p>A detailed comparison to help you decide where to invest your budget.</p>
+            <a href="#" class="blog-link">Read More →</a>
+          </div>
         </div>
+      </div>
+    </section>
 
-        <button type="submit" class="submit-btn">Submit Enquiry</button>
-      </form>
-    </div>
+
+    <section id="testimonial">
+      <h2>What Our Clients Say</h2>
+      
+      <div class="testimonial-slider-container">
+        <div class="testimonial-track">
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://logo.clearbit.com/apollohospitals.com" alt="Hair Clinic Logo" />
+            <div class="star-rating">★★★★★</div>
+            <p>Our hair transplant clinic saw 180% increase in enquiries within 2 months! Their Google Ads strategy brought us quality patients daily."</p>
+            <h4>Dr. Rajesh Sharma</h4>
+            <p class="testimonial-position">Director, SkyLine Hair Transplant Clinic</p>
+          </div>
+
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://logo.clearbit.com/fortishealthcare.com" alt="Eye Hospital Logo" />
+            <div class="star-rating">★★★★★</div>
+            <p>Boost Lead helped us dominate local SEO for eye care. We're now ranking #1 for 'best eye hospital in Pune' and getting 50+ calls daily!"</p>
+            <h4>Dr. Priya Kulkarni</h4>
+            <p class="testimonial-position">Founder, Vision Care Eye Hospital</p>
+          </div>
+
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://logo.clearbit.com/cipla.com" alt="Pharma Logo" />
+            <div class="star-rating">★★★★★</div>
+            <p>Their pharmaceutical digital marketing expertise helped us reach 500+ doctors. B2B lead generation campaigns exceeded all expectations!"</p>
+            <h4>Vikram Mehta</h4>
+            <p class="testimonial-position">Sales Head, MedCure Pharmaceuticals</p>
+          </div>
+
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://logo.clearbit.com/tajhotels.com" alt="Hotel Logo" />
+            <div class="star-rating">★★★★★</div>
+            <p>Hotel bookings went up 150% during off-season! Their content marketing and Google Ads brought international guests to our resort."</p>
+            <h4>Rohit Joshi</h4>
+            <p class="testimonial-position">Manager, Paradise Valley Resort</p>
+          </div>
+
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://logo.clearbit.com/kia.com" alt="Kia Logo" />
+            <div class="star-rating">★★★★★</div>
+            <p>Kia Sonet test drives increased by 300%! Local SEO and Google Ads brought serious buyers to our showroom daily. Outstanding work!"</p>
+            <h4>Sanjay Pawar</h4>
+            <p class="testimonial-position">Sales Manager, AutoMax Kia Showroom</p>
+          </div>
+
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://logo.clearbit.com/tatamotors.com" alt="Tata Motors Logo" />
+            <div class="star-rating">★★★★★</div>
+            <p>Tata Nexon enquiries doubled! Their automotive digital marketing strategy brought qualified buyers daily. Best agency for car dealerships!"</p>
+            <h4>Kiran Salvi</h4>
+            <p class="testimonial-position">Showroom Head, Tata Motors Pune</p>
+          </div>
+
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://logo.clearbit.com/manipal.edu" alt="College Logo" />
+            <div class="star-rating">★★★★★</div>
+            <p>Admissions increased by 250% this year! SEO and Google Ads campaigns brought quality student enquiries from across Maharashtra."</p>
+            <h4>Prof. Meera Deshpande</h4>
+            <p class="testimonial-position">Admissions Head, Zenith College</p>
+          </div>
+
+          <div class="testimonial-box">
+                      <img class="testimonial-avatar" src="https://ui-avatars.com/api/?name=Cinema&size=128&background=A855F7&color=fff&bold=true&font-size=0.4" alt="Cinema" />
+
+            <div class="star-rating">★★★★★</div>
+            <p>Movie promotion budget optimized by 40%! Their targeted Google Ads campaigns brought 2X footfalls on opening weekend. Brilliant strategy!"</p>
+            <h4>Rahul Kapoor</h4>
+            <p class="testimonial-position">Marketing Manager, CinePlex Distributors</p>
+          </div>
+
+          <!-- Duplicate for seamless loop -->
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://logo.clearbit.com/apollohospitals.com" alt="Hair Clinic Logo" />
+            <div class="star-rating">★★★★★</div>
+            <p>Our hair transplant clinic saw 180% increase in enquiries within 2 months! Their Google Ads strategy brought us quality patients daily."</p>
+            <h4>Dr. Rajesh Sharma</h4>
+            <p class="testimonial-position">Director, SkyLine Hair Transplant Clinic</p>
+          </div>
+
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://logo.clearbit.com/fortishealthcare.com" alt="Eye Hospital Logo" />
+            <div class="star-rating">★★★★★</div>
+            <p>Boost Lead helped us dominate local SEO for eye care. We're now ranking #1 for 'best eye hospital in Pune' and getting 50+ calls daily!"</p>
+            <h4>Dr. Priya Kulkarni</h4>
+            <p class="testimonial-position">Founder, Vision Care Eye Hospital</p>
+          </div>
+
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://img.icons8.com/ios-filled/100/059669/real-estate.png" alt="Real Estate Logo" />
+
+            <div class="star-rating">★★★★★</div>
+            <p>Property enquiries doubled in just 45 days! Their social media campaigns and SEO brought serious buyers. Highly recommend for real estate."</p>
+            <h4>Amit Patil</h4>
+            <p class="testimonial-position">MD, Sunrise Properties Pune</p>
+          </div>
+
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://logo.clearbit.com/tatacliq.com" alt="Spa Logo" />
+            <div class="star-rating">★★★★★</div>
+            <p>Our spa bookings increased by 220%! Instagram campaigns and Google Business optimization made us the go-to luxury spa in Baner."</p>
+            <h4>Sneha Deshmukh</h4>
+            <p class="testimonial-position">Owner, Aroma Bliss Spa & Salon</p>
+          </div>
+
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://logo.clearbit.com/cipla.com" alt="Pharma Logo" />
+            <div class="star-rating">★★★★★</div>
+            <p>Their pharmaceutical digital marketing expertise helped us reach 500+ doctors. B2B lead generation campaigns exceeded all expectations!"</p>
+            <h4>Vikram Mehta</h4>
+            <p class="testimonial-position">Sales Head, MedCure Pharmaceuticals</p>
+          </div>
+
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://logo.clearbit.com/tajhotels.com" alt="Hotel Logo" />
+            <div class="star-rating">★★★★★</div>
+            <p>Hotel bookings went up 150% during off-season! Their content marketing and Google Ads brought international guests to our resort."</p>
+            <h4>Rohit Joshi</h4>
+            <p class="testimonial-position">Manager, Paradise Valley Resort</p>
+          </div>
+
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://logo.clearbit.com/brigade.co.in" alt="Villa Logo" />
+            <div class="star-rating">★★★★★</div>
+            <p>Luxury villa enquiries tripled! SEO and Facebook campaigns targeted high-net-worth buyers perfectly. Best ROI we've seen in 5 years."</p>
+            <h4>Kavita Reddy</h4>
+            <p class="testimonial-position">Director, Elite Villas Pune</p>
+          </div>
+
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://logo.clearbit.com/kia.com" alt="Kia Logo" />
+            <div class="star-rating">★★★★★</div>
+            <p>Kia Sonet test drives increased by 300%! Local SEO and Google Ads brought serious buyers to our showroom daily. Outstanding work!"</p>
+            <h4>Sanjay Pawar</h4>
+            <p class="testimonial-position">Sales Manager, AutoMax Kia Showroom</p>
+          </div>
+
+  <!-- Position 1: Gym (working logo, e.g. Cultfit) -->
+  <div class="testimonial-box">
+              <img class="testimonial-avatar" src="https://img.icons8.com/ios-filled/100/F59E42/dumbbell.png" alt="Gym Logo" />
+
+    <div class="star-rating">★★★★★</div>
+    <p>"Gym memberships up 180% in 3 months! Instagram reels and Google Business posts made us the most popular gym in Koregaon Park."</p>
+    <h4>— Anjali Bhosale</h4>
+    <p class="testimonial-position">Owner, FitLife Gym & Fitness</p>
   </div>
 
-  <script>
-    const hamburger = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const closeBtn = document.getElementById('closeBtn');
-    const overlay = document.getElementById('overlay');
-    const mobileLinks = mobileMenu.querySelectorAll('a');
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://logo.clearbit.com/tatamotors.com" alt="Tata Motors Logo" />
+            <div class="star-rating">★★★★★</div>
+            <p>Tata Nexon enquiries doubled! Their automotive digital marketing strategy brought qualified buyers daily. Best agency for car dealerships!"</p>
+            <h4>Kiran Salvi</h4>
+            <p class="testimonial-position">Showroom Head, Tata Motors Pune</p>
+          </div>
 
-    hamburger.addEventListener('click', () => {
-      mobileMenu.classList.add('active');
-      overlay.classList.add('active');
-    });
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://logo.clearbit.com/manipal.edu" alt="College Logo" />
+            <div class="star-rating">★★★★★</div>
+            <p>Admissions increased by 250% this year! SEO and Google Ads campaigns brought quality student enquiries from across Maharashtra."</p>
+            <h4>Prof. Meera Deshpande</h4>
+            <p class="testimonial-position">Admissions Head, Zenith College</p>
+          </div>
 
-    closeBtn.addEventListener('click', () => {
-      mobileMenu.classList.remove('active');
-      overlay.classList.remove('active');
-    });
+          <div class="testimonial-box">
+            <img class="testimonial-avatar" src="https://logo.clearbit.com/pvr.co.in" alt="Cinema Logo" />
+            <div class="star-rating">★★★★★</div>
+            <p>Movie promotion budget optimized by 40%! Their targeted Google Ads campaigns brought 2X footfalls on opening weekend. Brilliant strategy!"</p>
+            <h4>Amor Kapoor</h4>
+            <p class="testimonial-position">Marketing Manager, CinePlex Distributors</p>
+          </div>
 
-    overlay.addEventListener('click', () => {
-      mobileMenu.classList.remove('active');
-      overlay.classList.remove('active');
-    });
 
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', () => {
+        </div>
+      </div>
+
+        </div>
+      </div>
+    </section>
+
+    <footer id="footer">
+      <div class="footer-container">
+        <div class="footer-column">
+          <h3 class="footer-heading">About Us</h3>
+          <h2 class="footer-logo">Boost Lead</h2>
+          <p class="footer-tagline">Based in Pune, we are a results-driven digital marketing agency specializing in SEO, PPC, social media marketing, and web development. Our mission is to help businesses grow their online presence, generate quality leads, and achieve measurable ROI through data-driven strategies and creative campaigns.</p>
+          
+          <div class="social-icons">
+            <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-column">
+          <h3 class="footer-heading">Services</h3>
+          <ul class="footer-list">
+            <li><a href="#services">SEO Optimization</a></li>
+            <li><a href="#services">Google Ads (PPC)</a></li>
+            <li><a href="#services">Social Media Marketing</a></li>
+            <li><a href="#services">Digital Marketing</a></li>
+            <li><a href="#services">Content Marketing</a></li>
+            <li><a href="#services">Website Development</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3 class="footer-heading">Contact Info</h3>
+          <ul class="footer-contact">
+            <li>
+              <i class="fas fa-phone"></i>
+              <a href="tel:+917709557777">+91 77095 57777</a>
+            </li>
+            <li>
+              <i class="fas fa-envelope"></i>
+              <a href="mailto:digitalseobooster@mail.com">digitalseobooster@mail.com</a>
+            </li>
+            <li>
+              <i class="fas fa-map-marker-alt"></i>
+              <span>Baner, Pune, Maharashtra, India</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>Copyright &copy; 2025 All Rights Reserved by <strong>Boost Lead</strong></p>
+      </div>
+    </footer>
+
+    <a href="https://wa.me/917709557777" class="whatsapp-float" target="_blank" aria-label="WhatsApp">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <button class="enquiry-float" id="enquiryBtn" aria-label="Enquiry Now">
+      <i class="fas fa-envelope"></i> Enquiry Now
+    </button>
+
+    <div class="success-modal" id="successModal">
+      <div class="success-content">
+        <div class="success-icon">
+          <i class="fas fa-check"></i>
+        </div>
+        <h2>Thank You!</h2>
+        <p>Your enquiry has been submitted successfully.<br><br>We will reach out to you shortly!</p>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="enquiryModal">
+      <div class="modal-content">
+        <button class="modal-close" id="closeModal">&times;</button>
+        <h2>Get in Touch</h2>
+        <p>Fill out the form below and we'll get back to you shortly!</p>
+        
+        <form id="enquiryForm">
+          <div class="form-group">
+            <label for="name">Full Name *</label>
+            <input type="text" id="name" name="name" required placeholder="Enter your name">
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number *</label>
+            <input type="tel" id="phone" name="phone" required placeholder="+91 XXXXX XXXXX">
+          </div>
+
+          <div class="form-group">
+            <label for="service">Service Interested In *</label>
+            <select id="service" name="service" required>
+              <option value="">Select a service</option>
+              <option value="SEO Optimization">SEO Optimization</option>
+              <option value="Google Ads (PPC)">Google Ads (PPC)</option>
+              <option value="Social Media Marketing">Social Media Marketing</option>
+              <option value="Digital Marketing">Digital Marketing</option>
+              <option value="Content Marketing">Content Marketing</option>
+              <option value="Website Development">Website Development</option>
+              <option value="Email Marketing">Email Marketing</option>
+              <option value="Free Website Audit">Free Website Audit</option>
+              <option value="Local SEO">Local SEO</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us about your project..."></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn">Submit Enquiry</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const hamburger = document.getElementById('hamburger');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const closeBtn = document.getElementById('closeBtn');
+      const overlay = document.getElementById('overlay');
+      const mobileLinks = mobileMenu.querySelectorAll('a');
+
+      hamburger.addEventListener('click', () => {
+        mobileMenu.classList.add('active');
+        overlay.classList.add('active');
+      });
+
+      closeBtn.addEventListener('click', () => {
         mobileMenu.classList.remove('active');
         overlay.classList.remove('active');
       });
-    });
 
-    const slides = document.querySelectorAll(".slide");
-    const dots = document.querySelectorAll(".dot");
-    const heroText = document.getElementById("heroText");
-    const heroOverlay = document.getElementById("heroOverlay");
-    const header = document.getElementById("mainHeader");
-
-    const slideTexts = [
-      { title: "Welcome to Boost Lead", desc: "We help businesses grow online through expert SEO, digital marketing, and social media strategies." },
-      { title: "Boost Your SEO Performance", desc: "Rank higher and attract the right customers with data-driven SEO solutions." },
-      { title: "Engage Your Audience", desc: "Transform your online presence with engaging campaigns that convert." },
-      { title: "Drive Real Business Growth", desc: "From strategy to execution, we help you achieve measurable results." }
-    ];
-
-    let current = 0;
-    let sliderInterval;
-
-    function isImageBright(image, callback) {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      canvas.width = 50;
-      canvas.height = 50;
-      ctx.drawImage(image, 0, 0, 50, 50);
-      const data = ctx.getImageData(0, 0, 50, 50).data;
-      let colorSum = 0;
-      for (let i = 0; i < data.length; i += 4) {
-        colorSum += (data[i] + data[i + 1] + data[i + 2]) / 3;
-      }
-      const brightness = colorSum / (data.length / 4);
-      callback(brightness > 140);
-    }
-
-    function adjustOverlayAndText(imageElement) {
-      isImageBright(imageElement, isBright => {
-        if (isBright) {
-          heroText.classList.add("light");
-          heroOverlay.classList.add("light");
-        } else {
-          heroText.classList.remove("light");
-          heroOverlay.classList.remove("light");
-        }
+      overlay.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        overlay.classList.remove('active');
       });
-    }
 
-    function showSlide(index) {
-      slides.forEach((slide) => slide.classList.remove("active"));
-      dots.forEach(dot => dot.classList.remove("active"));
-      slides[index].classList.add("active");
-      dots[index].classList.add("active");
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.remove('active');
+          overlay.classList.remove('active');
+        });
+      });
 
-      heroText.classList.remove("show");
-      const currentImage = slides[index].querySelector("img");
+      const slides = document.querySelectorAll(".slide");
+      const dots = document.querySelectorAll(".dot");
+      const heroText = document.getElementById("heroText");
+      const heroOverlay = document.getElementById("heroOverlay");
+      const header = document.getElementById("mainHeader");
 
-      adjustOverlayAndText(currentImage);
+      const slideTexts = [
+        { title: "Welcome to Boost Lead", desc: "We help businesses grow online through expert SEO, digital marketing, and social media strategies." },
+        { title: "Boost Your SEO Performance", desc: "Rank higher and attract the right customers with data-driven SEO solutions." },
+        { title: "Engage Your Audience", desc: "Transform your online presence with engaging campaigns that convert." },
+        { title: "Drive Real Business Growth", desc: "From strategy to execution, we help you achieve measurable results." }
+      ];
 
-      setTimeout(() => {
-        heroText.querySelector("h2").textContent = slideTexts[index].title;
-        heroText.querySelector("p").textContent = slideTexts[index].desc;
-        heroText.classList.add("show");
-      }, 400);
-    }
+      let current = 0;
+      let sliderInterval;
 
-    function nextSlide() {
-      current = (current + 1) % slides.length;
-      showSlide(current);
-    }
+      function isImageBright(image, callback) {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = 50;
+        canvas.height = 50;
+        ctx.drawImage(image, 0, 0, 50, 50);
+        const data = ctx.getImageData(0, 0, 50, 50).data;
+        let colorSum = 0;
+        for (let i = 0; i < data.length; i += 4) {
+          colorSum += (data[i] + data[i + 1] + data[i + 2]) / 3;
+        }
+        const brightness = colorSum / (data.length / 4);
+        callback(brightness > 140);
+      }
 
-    function startSlider() { sliderInterval = setInterval(nextSlide, 5000); }
-    function pauseSlider() { clearInterval(sliderInterval); }
+      function adjustOverlayAndText(imageElement) {
+        isImageBright(imageElement, isBright => {
+          if (isBright) {
+            heroText.classList.add("light");
+            heroOverlay.classList.add("light");
+          } else {
+            heroText.classList.remove("light");
+            heroOverlay.classList.remove("light");
+          }
+        });
+      }
 
-    dots.forEach(dot => {
-      dot.addEventListener("click", () => {
-        current = parseInt(dot.getAttribute("data-index"));
+      function showSlide(index) {
+        slides.forEach((slide) => slide.classList.remove("active"));
+        dots.forEach(dot => dot.classList.remove("active"));
+        slides[index].classList.add("active");
+        dots[index].classList.add("active");
+
+        heroText.classList.remove("show");
+        const currentImage = slides[index].querySelector("img");
+
+        adjustOverlayAndText(currentImage);
+
+        setTimeout(() => {
+          heroText.querySelector("h2").textContent = slideTexts[index].title;
+          heroText.querySelector("p").textContent = slideTexts[index].desc;
+          heroText.classList.add("show");
+        }, 400);
+      }
+
+      function nextSlide() {
+        current = (current + 1) % slides.length;
         showSlide(current);
-        pauseSlider();
-        startSlider();
-      });
-    });
-
-    document.querySelector(".hero-container").addEventListener("mouseenter", pauseSlider);
-    document.querySelector(".hero-container").addEventListener("mouseleave", startSlider);
-
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 50) header.classList.add("scrolled");
-      else header.classList.remove("scrolled");
-    });
-
-    startSlider();
-
-    const enquiryBtn = document.getElementById('enquiryBtn');
-    const enquiryModal = document.getElementById('enquiryModal');
-    const closeModal = document.getElementById('closeModal');
-    const enquiryForm = document.getElementById('enquiryForm');
-
-    enquiryBtn.addEventListener('click', () => {
-      enquiryModal.classList.add('active');
-    });
-
-    closeModal.addEventListener('click', () => {
-      enquiryModal.classList.remove('active');
-    });
-
-    enquiryModal.addEventListener('click', (e) => {
-      if (e.target === enquiryModal) {
-        enquiryModal.classList.remove('active');
       }
-    });
 
-    enquiryForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const phone = document.getElementById('phone').value;
-      const service = document.getElementById('service').value;
-      const message = document.getElementById('message').value;
-      
-      // Send email 1: Notification to business owner
-      emailjs.send("service_axpt1rv", "template_u74cmns", {
-        name: name,
-        email: email,
-        phone: phone,
-        service: service,
-        message: message
-      }).then(
-        function(response) {
-          console.log('✅ Notification email sent to business!', response.status);
+      function startSlider() { sliderInterval = setInterval(nextSlide, 5000); }
+      function pauseSlider() { clearInterval(sliderInterval); }
 
-          // Send email 2: Auto-reply to user
-          emailjs.send("service_axpt1rv", "template_3y9ouy", {
-            name: name,
-            email: email,
-            service: service
-          }).then(
-            function(autoReplyResponse) {
-              console.log('✅ Auto-reply sent to user!', autoReplyResponse.status);
-            },
-            function(autoReplyError) {
-              console.log('⚠️ Auto-reply failed (but notification sent):', autoReplyError);
-            }
-          );
-        },
-        function(error) {
-          console.log('❌ Email notification failed:', error);
+      dots.forEach(dot => {
+        dot.addEventListener("click", () => {
+          current = parseInt(dot.getAttribute("data-index"));
+          showSlide(current);
+          pauseSlider();
+          startSlider();
+        });
+      });
+
+      document.querySelector(".hero-container").addEventListener("mouseenter", pauseSlider);
+      document.querySelector(".hero-container").addEventListener("mouseleave", startSlider);
+
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 50) header.classList.add("scrolled");
+        else header.classList.remove("scrolled");
+      });
+
+      startSlider();
+
+      const enquiryBtn = document.getElementById('enquiryBtn');
+      const enquiryModal = document.getElementById('enquiryModal');
+      const closeModal = document.getElementById('closeModal');
+      const enquiryForm = document.getElementById('enquiryForm');
+
+      enquiryBtn.addEventListener('click', () => {
+        enquiryModal.classList.add('active');
+      });
+
+      closeModal.addEventListener('click', () => {
+        enquiryModal.classList.remove('active');
+      });
+
+      enquiryModal.addEventListener('click', (e) => {
+        if (e.target === enquiryModal) {
+          enquiryModal.classList.remove('active');
         }
-      );
-      
-      enquiryModal.classList.remove('active');
-      enquiryForm.reset();
-      
-      const successModal = document.getElementById('successModal');
-      successModal.classList.add('active');
-      
-      setTimeout(() => {
-        successModal.classList.remove('active');
-      }, 3000);
-    });
-  </script>
-</body>
-</html>
+      });
+
+      enquiryForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const service = document.getElementById('service').value;
+        const message = document.getElementById('message').value;
+        
+        // Send email 1: Notification to business owner
+        emailjs.send("service_axpt1rv", "template_u74cmns", {
+          name: name,
+          email: email,
+          phone: phone,
+          service: service,
+          message: message
+        }).then(
+          function(response) {
+            console.log('✅ Notification email sent to business!', response.status);
+
+            // Send email 2: Auto-reply to user
+            emailjs.send("service_axpt1rv", "template_3y9ouy", {
+              name: name,
+              email: email,
+              service: service
+            }).then(
+              function(autoReplyResponse) {
+                console.log('✅ Auto-reply sent to user!', autoReplyResponse.status);
+              },
+              function(autoReplyError) {
+                console.log('⚠️ Auto-reply failed (but notification sent):', autoReplyError);
+              }
+            );
+          },
+          function(error) {
+            console.log('❌ Email notification failed:', error);
+          }
+        );
+        
+        enquiryModal.classList.remove('active');
+        enquiryForm.reset();
+        
+        const successModal = document.getElementById('successModal');
+        successModal.classList.add('active');
+        
+        setTimeout(() => {
+          successModal.classList.remove('active');
+        }, 3000);
+      });
+    </script>
+  </body>
+  </html>
